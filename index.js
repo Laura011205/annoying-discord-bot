@@ -1,13 +1,11 @@
 const Discord = require("discord.js");
 const client = new Discord.Client({ intents: 32767 });
+const voiceDiscord = require("@discordjs/voice");
 
 let targetID = 0;
 const PREFIX = "!troll"
 
-function joinVoiceChannel(channel) {
-    console.log("Joining user's voice channel!");
-}
-
+// handle troll command
 client.on("messageCreate", (message) => {
     if (!message.content.startsWith(PREFIX)){
         return;
@@ -28,14 +26,42 @@ client.on("messageCreate", (message) => {
     }
     // userID is valid, set the targetID to userID
     targetID = userID;
-    // join user's channel
+    // join user's channel if the user is in a voice channel when the command is sent
     if (target.voice.channel != null) {
-        joinVoiceChannel(target.voice.channel);
+        voiceDiscord.joinVoiceChannel({
+            channelId: target.voice.channel.id,
+            guildId: target.voice.channel.guild.id,
+            adapterCreator: target.voice.channel.guild.voiceAdapterCreator,
+        });
     }
 });
 
+// handle voice channel state changes
+client.on("voiceStateUpdate", (oldState, newState) => {
+    // if the state change involves our target
+    if (newState.id == targetID) {
+        // if our target left a voice channel, leave with them
+        if (newState.channel == null) {
+            // I want client to leave oldState.channel 
+            const connection = voiceDiscord.getVoiceConnection(oldState.channel.guild.id);
+            connection.destroy();
+        }
+        // if our target joined a voice channel, join with them
+        else {
+            // I want client to join newState.channel
+            voiceDiscord.joinVoiceChannel({
+                channelId: newState.channel.id,
+                guildId: newState.channel.guild.id,
+                adapterCreator: newState.channel.guild.voiceAdapterCreator,
+            });
+        }
+    }
+})
+
+// confirm online status
 client.on("ready", () => {
     console.log("Annoying Bob is online");
 });
 
+// login discord bot
 client.login("OTM0NjQ3NzI3Nzg1MTQ4NTA3.YezIhw.EHM9lmrPBPWcDGI0WPBNyzBBM6s");
