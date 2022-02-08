@@ -28,35 +28,33 @@ client.on("messageCreate", (message) => {
     targetID = userID;
     // join user's channel if the user is in a voice channel when the command is sent
     if (target.voice.channel != null) {
-        voiceDiscord.joinVoiceChannel({
-            channelId: target.voice.channel.id,
-            guildId: target.voice.channel.guild.id,
-            adapterCreator: target.voice.channel.guild.voiceAdapterCreator,
-        });
+        joinChannel(target.voice.channel);
     }
 });
 
 // handle voice channel state changes
 client.on("voiceStateUpdate", (oldState, newState) => {
-    // if the state change involves our target
+    // if the state change involves the target
     if (newState.id == targetID) {
-        // if our target left a voice channel, leave with them
+        // if the target left a voice channel, leave with them
         if (newState.channel == null) {
-            // I want client to leave oldState.channel 
             const connection = voiceDiscord.getVoiceConnection(oldState.channel.guild.id);
             connection.destroy();
         }
-        // if our target joined a voice channel, join with them
+        // if the target joined a voice channel, join with them
         else {
-            // I want client to join newState.channel
-            voiceDiscord.joinVoiceChannel({
-                channelId: newState.channel.id,
-                guildId: newState.channel.guild.id,
-                adapterCreator: newState.channel.guild.voiceAdapterCreator,
-            });
+            joinChannel(newState.channel);
         }
     }
 })
+
+function joinChannel(channel) {
+    voiceDiscord.joinVoiceChannel({
+        channelId: channel.id,
+        guildId: channel.guild.id,
+        adapterCreator: channel.guild.voiceAdapterCreator,
+    });
+}
 
 // confirm online status
 client.on("ready", () => {
