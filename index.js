@@ -4,7 +4,7 @@ const voiceDiscord = require("@discordjs/voice");
 require('dotenv').config();
 
 let targetID = 0;
-const PREFIX = "!troll"
+const PREFIX = "!bob"
 
 // handle troll command
 client.on("messageCreate", (message) => {
@@ -15,14 +15,14 @@ client.on("messageCreate", (message) => {
     let userID = message.content.split(" ")[1];
     // if userID not specified
     if (userID === null) {
-        message.author.send("Enter an user ID after the command in this format: !troll [userID]");
+        message.author.send("Enter an user ID after the command in this format: !bob [userID]");
         return;
     }
     // find the user to troll using given userID
     let target = message.guild.members.cache.get(userID);
     // if userID is invalid
     if (target === null) {
-        message.author.send("Enter a VALID user ID after the command in this format: !troll [userID]");
+        message.author.send("Enter a VALID user ID after the command in this format: !bob [userID]");
         return;
     }
     // userID is valid, set the targetID to userID
