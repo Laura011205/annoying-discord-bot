@@ -5,58 +5,74 @@ require('dotenv').config();
 
 let targetID = 0;
 const PREFIX = '!bob';
+const AUDIO_OPTIONS = {
+    'banana': 'assets/banana.mp3',
+    'ymca': 'assets/ymca.mp3',
+}
+let audioPath = AUDIO_OPTIONS['banana'];
 
-// handle troll command
+// Handle incoming messages
 client.on("messageCreate", (message) => {
+    // Do nothing if the message is bot a command
     if (!message.content.startsWith(PREFIX)){
         return;
     }
-    // if it is a valid command, get userID
+
+    // If it is a valid command, get userID
     let userID = message.content.split(" ")[1];
-    // if userID not specified
+    // If userID not specified
     if (userID == null) {
         message.author.send("Enter an user ID after the command in this format: !bob [userID]");
         return;
     }
-    // find the user to troll using given userID
+
+    // Find the user to troll using given userID
     let target = message.guild.members.cache.get(userID);
-    // if userID is invalid
+    // If userID is invalid
     if (target == null) {
         message.author.send("Enter a VALID user ID after the command in this format: !bob [userID]");
         return;
     }
-    // userID is valid, set the targetID to userID
+    // UserID is valid, set the targetID to userID
     targetID = userID;
-    // join user's channel if the user is in a voice channel when the command is sent
+
+    // Get audio option
+    let option = message.content.split(" ")[2];
+    // If audio option is valid, set path to chosen audio
+    if (option !== null && option in AUDIO_OPTIONS) {
+        audioPath = AUDIO_OPTIONS[option];
+    }
+
+    // Join user's channel if the user is in a voice channel when the command is sent
     if (target.voice.channel !== null) {
-        playAudio(target.voice.channel);
+        playAudio(target.voice.channel, audioPath);
     }
 });
 
-// handle voice channel state changes
+// Handle voice channel state changes
 client.on("voiceStateUpdate", (oldState, newState) => {
-    // if the state change involves the target
+    // If the state change involves the target
     if (newState.id === targetID) {
-        // if the target left a voice channel, leave with them
+        // If the target left a voice channel, leave with them
         if (newState.channel === null) {
             const connection = voiceDiscord.getVoiceConnection(oldState.channel.guild.id);
             connection.destroy();
         }
-        // if the target joined a voice channel, join with them
+        // If the target joined a voice channel, join with them
         else {
-            playAudio(newState.channel);
+            playAudio(newState.channel, audioPath);
         }
     }
 })
 
 // Play audio in specified channel
-function playAudio(channel) {
+function playAudio(channel, audioPath) {
     // Join specified channel
     const connection = joinChannel(channel);
 
     // Set up audio player and audio resource
     const player = voiceDiscord.createAudioPlayer();
-    const resource = voiceDiscord.createAudioResource('assets/banana.mp3');
+    const resource = voiceDiscord.createAudioResource(audioPath);
 
     // Play audio resource
     player.play(resource);
@@ -64,7 +80,7 @@ function playAudio(channel) {
     
     // Loop audio resource until next voice state change/command
     player.on(voiceDiscord.AudioPlayerStatus.Idle, () => {
-        const resource = voiceDiscord.createAudioResource('assets/banana.mp3');
+        const resource = voiceDiscord.createAudioResource(audioPath);
         player.play(resource);
     })
 }
