@@ -81,7 +81,7 @@ function joinChannel(channel) {
 
 // Confirm online status
 client.on("ready", () => {
-    console.log("Annoying Bob is online");
+    console.log("King Bob is online");
 });
 
 // login discord bot
