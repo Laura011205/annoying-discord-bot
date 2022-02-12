@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const client = new Discord.Client({ intents: 32767 });
 const voiceDiscord = require("@discordjs/voice");
+require('dotenv').config();
 
 let targetID = 0;
 const PREFIX = "!troll"
@@ -28,7 +29,7 @@ client.on("messageCreate", (message) => {
     targetID = userID;
     // join user's channel if the user is in a voice channel when the command is sent
     if (target.voice.channel !== null) {
-        joinChannel(target.voice.channel);
+        playAudio(target.voice.channel);
     }
 });
 
@@ -43,23 +44,34 @@ client.on("voiceStateUpdate", (oldState, newState) => {
         }
         // if the target joined a voice channel, join with them
         else {
-            joinChannel(newState.channel);
+            playAudio(newState.channel);
         }
     }
 })
 
+// Play audio in specified channel
+function playAudio(channel) {
+    const connection = joinChannel(channel);
+    const player = voiceDiscord.createAudioPlayer();
+    const resource = voiceDiscord.createAudioResource('assets/bannana-song.mp3');
+    player.play(resource);
+    connection.subscribe(player);
+}
+
+// Join voice channel
 function joinChannel(channel) {
-    voiceDiscord.joinVoiceChannel({
+    const connection = voiceDiscord.joinVoiceChannel({
         channelId: channel.id,
         guildId: channel.guild.id,
         adapterCreator: channel.guild.voiceAdapterCreator,
     });
+    return connection;
 }
 
-// confirm online status
+// Confirm online status
 client.on("ready", () => {
     console.log("Annoying Bob is online");
 });
 
 // login discord bot
-client.login("OTM0NjQ3NzI3Nzg1MTQ4NTA3.YezIhw.EHM9lmrPBPWcDGI0WPBNyzBBM6s");
+client.login(process.env.TOKEN);
