@@ -8,6 +8,7 @@ const PREFIX = '!bob';
 const AUDIO_OPTIONS = {
     'banana': 'assets/banana.mp3',
     'ymca': 'assets/ymca.mp3',
+    'papa': 'assets/papa-mama-loca-pipa.mp3',
 }
 let audioPath = AUDIO_OPTIONS['banana'];
 
