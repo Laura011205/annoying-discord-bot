@@ -42,6 +42,8 @@ client.on("messageCreate", (message) => {
     // If audio option is valid, set path to chosen audio
     if (option !== null && option in AUDIO_OPTIONS) {
         audioPath = AUDIO_OPTIONS[option];
+    } else {
+        audioPath = AUDIO_OPTIONS['banana'];
     }
 
     // Join user's channel if the user is in a voice channel when the command is sent
