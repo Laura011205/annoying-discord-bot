@@ -4,7 +4,7 @@ const voiceDiscord = require("@discordjs/voice");
 require('dotenv').config();
 
 let targetID = 0;
-const PREFIX = "!bob"
+const PREFIX = "!bob";
 
 // handle troll command
 client.on("messageCreate", (message) => {
@@ -51,11 +51,22 @@ client.on("voiceStateUpdate", (oldState, newState) => {
 
 // Play audio in specified channel
 function playAudio(channel) {
+    // Join specified channel
     const connection = joinChannel(channel);
+
+    // Set up audio player and audio resource
     const player = voiceDiscord.createAudioPlayer();
     const resource = voiceDiscord.createAudioResource('assets/banana.mp3');
+
+    // Play audio resource
     player.play(resource);
     connection.subscribe(player);
+    
+    // Loop audio resource until next voice state change/command
+    player.on(voiceDiscord.AudioPlayerStatus.Idle, () => {
+        const resource = voiceDiscord.createAudioResource('assets/banana.mp3');
+        player.play(resource);
+    })
 }
 
 // Join voice channel
