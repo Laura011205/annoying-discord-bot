@@ -53,7 +53,7 @@ client.on("voiceStateUpdate", (oldState, newState) => {
 function playAudio(channel) {
     const connection = joinChannel(channel);
     const player = voiceDiscord.createAudioPlayer();
-    const resource = voiceDiscord.createAudioResource('assets/bannana-song.mp3');
+    const resource = voiceDiscord.createAudioResource('assets/banana.mp3');
     player.play(resource);
     connection.subscribe(player);
 }
