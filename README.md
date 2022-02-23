@@ -8,6 +8,8 @@ Follow steps 1-7 [here](https://discordpy.readthedocs.io/en/stable/discord.html#
 
 ## Installation
 
+**_Node.js 16.6.0 or newer is required._**
+
 1. Clone the repo
 2. Install the required dependencies using the command: `npm i`
 3. Create a `.env` file and copy `TOKEN = "[Bot Token]"` into the file, replace `[Bot Token]` with your bot token
