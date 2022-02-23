@@ -4,7 +4,7 @@ This bot follows a specified user in the server and serenades them in a voice ch
 
 ## Creating a Discord Bot
 
-Navigate to [this link](https://discord.com/developers/applications) and follow the steps [here](https://discordpy.readthedocs.io/en/stable/discord.html#creating-a-bot-account) to create your discord bot app. Save your bot token for the next step. **Do not share your bot token with anyone.**
+Follow steps 1-7 [here](https://discordpy.readthedocs.io/en/stable/discord.html#creating-a-bot-account) to create your discord bot app. Save your bot token for the next step. **Do not share your bot token with anyone.**
 
 ## Installation
 
@@ -12,9 +12,9 @@ Navigate to [this link](https://discord.com/developers/applications) and follow 
 2. Install the required dependencies using the command: `npm i`
 3. Create a `.env` file and copy `TOKEN = "[Bot Token]"` into the file, replace `[Bot Token]` with your bot token
 
-## Adding the Bot to Your Server
+## Inviting the Bot to Your Server
 
-Invite the bot into a server follow the steps [here](https://discordpy.readthedocs.io/en/stable/discord.html#inviting-your-bot)
+Invite the bot into a server by following steps 1-7 [here](https://discordpy.readthedocs.io/en/stable/discord.html#inviting-your-bot)
 
 ## Customizing the Bot
 
