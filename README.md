@@ -1,6 +1,6 @@
 # Annoying Discord Bot
 
-This bot follows a specified user in the server and serenades them in a voice channel.
+This bot follows a specified user in the server and serenades the user in a voice channel.
 
 ## Creating a Discord Bot
 
