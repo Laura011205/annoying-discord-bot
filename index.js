@@ -1,6 +1,15 @@
 // Imports
-import Discord from "discord.js";
-const client = new Discord.Client({ intents: 32767 });
+import { Client, Intents } from "discord.js";
+const myIntents = new Intents([
+  Intents.FLAGS.GUILD_VOICE_STATES,
+  Intents.FLAGS.GUILD_MESSAGES,
+  Intents.FLAGS.DIRECT_MESSAGES,
+  Intents.FLAGS.GUILD_MEMBERS,
+  Intents.FLAGS.GUILDS,
+]);
+const client = new Client({
+  intents: myIntents,
+});
 import {
   AudioPlayerStatus,
   createAudioPlayer,
@@ -27,7 +36,7 @@ client.on("messageCreate", (message) => {
   const userID = getUserID(message);
   if (!userID) {
     message.author.send(
-      "Invalid userID\nCommand format: !bob [userID] [audio option]"
+      "Invalid userID\nCommand format: " + PREFIX + " [userID] [audio#]"
     );
     return;
   }
@@ -36,14 +45,8 @@ client.on("messageCreate", (message) => {
   targetID = userID;
   const target = message.guild.members.cache.get(userID);
 
-  // Get audio option
-  let option = message.content.split(" ")[2];
-  // If audio option is valid, set path to chosen audio
-  if (option !== null && option in AUDIO_OPTIONS) {
-    audioPath = AUDIO_OPTIONS[option];
-  } else {
-    audioPath = AUDIO_OPTIONS[1];
-  }
+  // Get audio path
+  audioPath = getAudioOption(message);
 
   // Join user's channel if the user is in a voice channel when the command is sent
   if (target.voice.channel !== null) {
@@ -51,6 +54,19 @@ client.on("messageCreate", (message) => {
     playAudio(audioPath, connection);
   }
 });
+
+// Set audio option
+function getAudioOption(message) {
+  const option = message.content.split(" ")[2];
+  // If audio option is valid, set path to chosen audio
+  if (option !== null && option in AUDIO_OPTIONS) {
+    return AUDIO_OPTIONS[option];
+  }
+  // Otherwise default audio option
+  else {
+    return AUDIO_OPTIONS[1];
+  }
+}
 
 // Validate userID
 function getUserID(message) {
