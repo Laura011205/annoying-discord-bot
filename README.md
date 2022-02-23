@@ -10,19 +10,23 @@ Navigate to [this link](https://discord.com/developers/applications) and follow 
 
 1. Clone the repo
 2. Install the required dependencies using the command: `npm i`
-3. Create a `.env` file and copy `TOKEN = "[Your Bot Token]"` into the file, replace `[Your bot Token]` with your bot token
+3. Create a `.env` file and copy `TOKEN = "[Bot Token]"` into the file, replace `[Bot Token]` with your bot token
 
 ## Adding the Bot to Your Server
 
-1. Invite the bot into a server follow the steps [here](https://discordpy.readthedocs.io/en/stable/discord.html#inviting-your-bot)
-2. Run the program using the command: `node .`
-3. Enter a command in any text channel in your server in the following format: `!bob [userID] [audio#]`
-   - Replace `[userID]` with the user ID of the person you want the bot to follow, [here's how to find discord user IDs](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-)
-   - Replace `[audio#]` with a number in your audio file names
+Invite the bot into a server follow the steps [here](https://discordpy.readthedocs.io/en/stable/discord.html#inviting-your-bot)
 
 ## Customizing the Bot
 
-1. To replace the default audio files:
-   - Replace the audio files in `/assets` with your own audio files
-   - Add/remove/replace audio paths by changing the `AUDIO_OPTIONS` file in `setup.js` as needed
+1. To replace the default audio resources:
+   - Replace the audio files in the `assets` folder with your own audio resources
+   - In `setup.js`, `AUDIO_OPTIONS` represents audio options and their associated paths. Add/remove/edit the object to set up your own audio resources as needed
 2. Change `PREFIX` in `setup.js` to change your bot's command
+
+## Running the Bot
+
+1. Run the program using the command: `node .`
+2. Enter a command in any text channel in your server in the following format: `[command] [userID] [#]`
+   - Replace `[command]` with the value of `PREFIX` in `setup.js`
+   - Replace `[userID]` with the user ID of the person you want the bot to follow, [here's how to find discord user IDs](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-)
+   - Replace `[#]` with a property name in the `AUDIO_OPTIONS` object in `setup.js`
