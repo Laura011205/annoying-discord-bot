@@ -36,7 +36,7 @@ client.on("messageCreate", (message) => {
   const userID = getUserID(message);
   if (!userID) {
     message.author.send(
-      "Invalid userID\nCommand format: " + PREFIX + " [userID] [audio#]"
+      "Invalid userID\nCommand format: " + PREFIX + " [userID] [#]"
     );
     return;
   }
